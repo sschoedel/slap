@@ -11,6 +11,7 @@ function (add_slap_test name)
     PRIVATE 
     slap
     gtest::gtest
+    Eigen3::Eigen
   )
   if (NOT APPLE AND NOT WIN32)
     target_link_libraries(${TEST_NAME} PUBLIC m)
@@ -18,8 +19,10 @@ function (add_slap_test name)
   gtest_discover_tests(${TEST_NAME})
 endfunction()
 
+find_package(Eigen3)
 
 # Add tests
+add_slap_test(eigen_backend)
 add_slap_test(matrix)
 add_slap_test(vector)
 add_slap_test(submatrix)

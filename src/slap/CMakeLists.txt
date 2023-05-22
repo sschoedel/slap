@@ -8,6 +8,21 @@ if (SLAP_CLANG_TIDY AND (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
     )
 endif ()
 
+
+# include(FindCPM)
+# CPMAddPackage(
+#   NAME Eigen
+#   VERSION 3.4.0
+#   URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+#   # Eigen's CMakelists are not intended for library use
+#   DOWNLOAD_ONLY YES
+# )
+find_package(Eigen3)
+# if(Eigen_ADDED)
+#   add_library(Eigen::Eigen INTERFACE IMPORTED)
+#   target_include_directories(Eigen::Eigen INTERFACE ${Eigen_SOURCE_DIR})
+# endif()
+
 add_library(slap
   matrix.h
   matrix.c
@@ -50,6 +65,7 @@ add_library(slap
 
   matmul.h
   matmul.c
+  matmul_eigen.cpp
 
   cholesky.h
   cholesky.c qr.c qr.h tri.c tri.h)
@@ -65,6 +81,7 @@ target_compile_definitions(slap PUBLIC SLAP_FLOAT=${SLAP_FLOAT})
 # Link math library
 if (NOT APPLE AND NOT WIN32)
   target_link_libraries(slap PUBLIC m)
+  target_link_libraries(slap PRIVATE Eigen3::Eigen)
 endif()
 
 add_library(slap::slap ALIAS slap)

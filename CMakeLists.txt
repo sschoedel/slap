@@ -38,7 +38,7 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif ()
 
 # Enable testing
-option(SLAP_BUILD_TESTS "Build tests for slap" ON)
+option(SLAP_BUILD_TESTS "Build tests for slap" OFF)
 
 # Code Coverage
 option(SLAP_CODE_COVERAGE "Compile slap with Code Coverage." OFF)
@@ -56,10 +56,15 @@ option(SLAP_CLANG_TIDY "Run clang-tidy analyzer on the source code." OFF)
 set(SLAP_FLOAT double CACHE STRING "Floating point precision for slap (float,double).")
 
 # Build examples
-option(SLAP_BUILD_EXAMPLES "Build examples for slap." OFF)
+option(SLAP_BUILD_EXAMPLES "Build examples for slap." ON)
 
 # Build with -march=native
-option(SLAP_VECTORIZE "Compile with -march=native" OFF)
+option(SLAP_VECTORIZE "Compile with -march=native" ON)
+
+# Choose backend
+set(SLAP_BACKEND_EIGEN CACHE STRING "Use Eigen as function backend")
+
+find_package(Eigen3)
 
 ##############################
 # Dependencies
@@ -105,7 +110,7 @@ if (NOT WIN32)
   endif()
 endif()
 
-## Make all includes relative to src/ directory
+## Make all includes relative to src/ directory 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Build source files
